@@ -10,6 +10,14 @@ public class Entity : MonoBehaviour
 
 	public float Speed_X, Speed_Y;
 	private float m_Speed_X, m_Speed_Y;
+
+	public Projectile Attack;
+	#endregion
+
+	#region Private Variables
+
+	RaycastHit MouseRayHit;
+
 	#endregion
 
 	public struct Movement_Axis
@@ -20,23 +28,6 @@ public class Entity : MonoBehaviour
 		public void SetY(float a_y) { y = a_y;}
 		public float GetX() { return y; }
 		public float GetY() { return x; }
-
-		public float Up, Down, Left, Right;
-		public void SetUPLR(float a_Up, float a_Down, float a_Left, float a_Right)
-		{
-			Up		= a_Up;
-			Down	= a_Down;
-			Left	= a_Left;
-			Right	= a_Right;
-		}
-		public void SetUp() { }
-		public void SetDown() { }
-		public void SetLeft() { }
-		public void SetRight() { }
-		public float GetUp() { return Up; }
-		public float GetDown() { return Down; }
-		public float GetLeft() { return Left; }
-		public float GetRight() { return Right; }
 	}
 
 	public Movement_Axis UserAxis;
@@ -44,14 +35,17 @@ public class Entity : MonoBehaviour
 	#region References
 	public Rigidbody RB_Reference;
 	public SpriteRenderer SR_Reference;
+	public Camera Cam_reference;
 	#endregion
 
 	// Use this for initialization
-	void Start()
+	void Initialise()
 	{
 		m_Health = Health;
 		UserAxis = new Movement_Axis();
 		UserAxis.SetXY(0, 0);
+		m_Speed_X = Speed_X;
+		m_Speed_Y = Speed_Y;
 	}
 
 	// Update is called once per frame
@@ -63,7 +57,7 @@ public class Entity : MonoBehaviour
 	public void Move(Movement_Axis Direction)
 	{
 		// Movement has been done in this way so that the Player and the enemies can use the same movement scripts and mechanics.
-
+		// Can be fed manual input or a programmed sequence
 		Vector3 Position = transform.position;
 		
 		Position.x += (Speed_X + Time.deltaTime) * UserAxis.GetX();
@@ -74,8 +68,18 @@ public class Entity : MonoBehaviour
 
 	}
 
-	public void Attack(Vector2 Direction, GameObject Projectile)
+	public bool LaunchAttack(Vector2 Direction, Projectile Attack)
 	{
+		return false;
+	}
 
+	public Vector3 RaycastOut(Ray RayToHit)
+	{
+		if(Physics.Raycast(RayToHit,out MouseRayHit,1000)) // Ideally for raycasting to camera, but left open in case I use a different raycast in the future for something else.
+		{
+			return MouseRayHit.point;
+		}
+
+		return Vector3.zero;
 	}
 }

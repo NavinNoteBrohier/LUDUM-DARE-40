@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+	public float Speed;
+	public Vector2 Direction;
+	public float Size;
+	public float Damage;
 
 	// Use this for initialization
 	void Start ()
@@ -15,5 +19,10 @@ public class Projectile : MonoBehaviour
 	void Update ()
 	{
 		
+	}
+
+	public void Foo()
+	{
+
 	}
 }

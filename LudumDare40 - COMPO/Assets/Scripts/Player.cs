@@ -11,7 +11,19 @@ public class Player : Entity
 	public float ChargeTimer,CoolDownTimer;
 	private float Reset_ChargeTimer, ResetCoolDownTimer;
 
-	public GameObject MagicAttack;
+	#endregion
+
+	#region Private variables
+
+	Vector3 PointerDirection;
+	float LerpSpeedRotateTowards = 0.5f;
+
+	#endregion
+
+
+	#region // Player references
+	public GameObject TopSprite;
+	public GameObject BottomSprite;
 	#endregion
 
 	// Use this for initialization
@@ -50,6 +62,8 @@ public class Player : Entity
 
 		else if(Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) UserAxis.SetX(0); // Could be done better
 
+		///
+
 		if (KeyDown(KeyCode.A)) UserAxis.SetY(-1);
 
 		else if (KeyDown(KeyCode.D)) UserAxis.SetY(1);
@@ -58,11 +72,19 @@ public class Player : Entity
 
 		Move(UserAxis);
 
-		//UserAxis.SetXY(0, 0);
-
 		#endregion
 
-		#region Aiming
+		#region Aiming and combat
+		// Get location of the cursor on the screen
+		PointerDirection = RaycastOut(Cam_reference.ScreenPointToRay(Input.mousePosition));
+		// Rotate the body of the wizard towards the cursor.
+
+		Vector3 NewLookDirection = PointerDirection - TopSprite.transform.position;
+
+
+
+
+		Debug.Log(PointerDirection);
 
 		#endregion
 	}
