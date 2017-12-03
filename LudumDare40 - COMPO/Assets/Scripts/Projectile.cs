@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : Entity
 {
 	public float Speed;
 	public Vector2 Direction;
@@ -18,11 +18,13 @@ public class Projectile : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
+
+		RB_Reference.velocity = transform.forward * Speed;
+
 	}
 
-	public void Foo()
+	public void SetSpeed(float a_Speed)
 	{
-
+		Speed = a_Speed;
 	}
 }

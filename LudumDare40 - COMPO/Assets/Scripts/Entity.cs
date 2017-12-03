@@ -11,7 +11,7 @@ public class Entity : MonoBehaviour
 	public float Speed_X, Speed_Y;
 	private float m_Speed_X, m_Speed_Y;
 
-	public Projectile Attack;
+	public GameObject Attack;
 	#endregion
 
 	#region Private Variables
@@ -68,8 +68,11 @@ public class Entity : MonoBehaviour
 
 	}
 
-	public bool LaunchAttack(Vector2 Direction, Projectile Attack)
+	public bool LaunchAttack(Quaternion Direction, Vector3 Origin, GameObject Attack, float Speed)
 	{
+		GameObject obj = Instantiate(Attack, Origin, Direction);
+		obj.GetComponent<Projectile>().SetSpeed();
+
 		return false;
 	}
 

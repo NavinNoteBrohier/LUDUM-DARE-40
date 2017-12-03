@@ -10,13 +10,14 @@ public class Player : Entity
 
 	public float ChargeTimer,CoolDownTimer;
 	private float Reset_ChargeTimer, ResetCoolDownTimer;
+	public float RotateTowardsSpeed = 1;
 
 	#endregion
 
 	#region Private variables
 
 	Vector3 PointerDirection;
-	float LerpSpeedRotateTowards = 0.5f;
+
 
 	#endregion
 
@@ -78,13 +79,21 @@ public class Player : Entity
 		// Get location of the cursor on the screen
 		PointerDirection = RaycastOut(Cam_reference.ScreenPointToRay(Input.mousePosition));
 		// Rotate the body of the wizard towards the cursor.
-
 		Vector3 NewLookDirection = PointerDirection - TopSprite.transform.position;
+		float GetAngle = Mathf.Atan2(NewLookDirection.y, NewLookDirection.x) * Mathf.Rad2Deg;
+		Quaternion Rotator = Quaternion.AngleAxis(GetAngle, Vector3.forward);
+		TopSprite.transform.rotation = Quaternion.Slerp(TopSprite.transform.rotation, Rotator, Time.deltaTime * RotateTowardsSpeed);
+		//
+
+		if(Input.GetMouseButtonDown(0))
+		{
 
 
+			if(Input.GetMouseButtonUp(0))
+			{
 
-
-		Debug.Log(PointerDirection);
+			}
+		}
 
 		#endregion
 	}
