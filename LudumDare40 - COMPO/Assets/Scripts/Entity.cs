@@ -33,9 +33,9 @@ public class Entity : MonoBehaviour
 	public Movement_Axis UserAxis;
 
 	#region References
-	public Rigidbody RB_Reference;
-	public SpriteRenderer SR_Reference;
+	public Rigidbody2D RB_Reference;
 	public Camera Cam_reference;
+	public GameObject Manager_Reference;
 	#endregion
 
 	// Use this for initialization
@@ -68,10 +68,11 @@ public class Entity : MonoBehaviour
 
 	}
 
-	public bool LaunchAttack(Quaternion Direction, Vector3 Origin, GameObject Attack, float Speed)
+	public bool LaunchAttack(Quaternion Rotation,Vector2 Direction, Vector3 Origin, GameObject Attack, float Speed)
 	{
-		GameObject obj = Instantiate(Attack, Origin, Direction);
-		obj.GetComponent<Projectile>().SetSpeed();
+		GameObject obj = Instantiate(Attack, Origin, Rotation);
+		obj.transform.rotation = Rotation;
+		obj.GetComponent<Projectile>().SetSpeed(Speed, Direction);
 
 		return false;
 	}

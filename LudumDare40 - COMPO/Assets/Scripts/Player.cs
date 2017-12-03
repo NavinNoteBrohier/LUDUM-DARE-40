@@ -8,8 +8,8 @@ public class Player : Entity
 	public float Gold;
 	public float Gold_Strength;
 
-	public float ChargeTimer,CoolDownTimer;
-	private float Reset_ChargeTimer, ResetCoolDownTimer;
+	public float ChargeTimer,CoolDownTimer,ChargeCounter;
+	private float Reset_ChargeTimer, ResetCoolDownTimer,MaxCharge;
 	public float RotateTowardsSpeed = 1;
 
 	#endregion
@@ -25,6 +25,7 @@ public class Player : Entity
 	#region // Player references
 	public GameObject TopSprite;
 	public GameObject BottomSprite;
+	public GameObject WandSprite;
 	#endregion
 
 	// Use this for initialization
@@ -57,14 +58,16 @@ public class Player : Entity
 					S	
 		*/
 
+		this.transform.rotation = new Quaternion();
+
 		if (KeyDown(KeyCode.W))UserAxis.SetX(1);
 
 		else if (KeyDown(KeyCode.S)) UserAxis.SetX(-1);
 
 		else if(Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) UserAxis.SetX(0); // Could be done better
-
-		///
-
+		////
+		/////
+		////
 		if (KeyDown(KeyCode.A)) UserAxis.SetY(-1);
 
 		else if (KeyDown(KeyCode.D)) UserAxis.SetY(1);
@@ -85,14 +88,21 @@ public class Player : Entity
 		TopSprite.transform.rotation = Quaternion.Slerp(TopSprite.transform.rotation, Rotator, Time.deltaTime * RotateTowardsSpeed);
 		//
 
-		if(Input.GetMouseButtonDown(0))
+		MaxCharge = Gold_Strength * Gold * 10;
+
+		CoolDownTimer = CoolDownTimer <= 0 ? 0 : CoolDownTimer - Time.deltaTime;
+
+		if(Input.GetMouseButton(0) && CoolDownTimer == 0)
 		{
+			ChargeCounter = ChargeCounter <= MaxCharge ? (ChargeCounter += (Gold_Strength * Gold) * Time.deltaTime) + 1 : MaxCharge;
+		}
 
+		if (Input.GetMouseButtonUp(0) && CoolDownTimer == 0)
+		{
+			LaunchAttack(TopSprite.transform.rotation,Vector2.zero, WandSprite.transform.position, Attack, ChargeCounter);
 
-			if(Input.GetMouseButtonUp(0))
-			{
-
-			}
+			ChargeCounter = 0;
+			CoolDownTimer = ResetCoolDownTimer;
 		}
 
 		#endregion
