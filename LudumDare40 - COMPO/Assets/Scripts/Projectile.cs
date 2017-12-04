@@ -26,9 +26,20 @@ public class Projectile : MonoBehaviour
 		LifeTime = LifeTime <= 0 ? 0 : LifeTime -= Time.deltaTime;
 	}
 
-	public void SetSpeed(float a_Speed,Vector2 a_Direction)
+	public void SetSpeed(float a_Speed)
 	{
 		Speed = a_Speed;
 		RB_Reference.AddForce(gameObject.transform.right * a_Speed, ForceMode2D.Impulse);
+	}
+
+	public void SetSpeed(float a_Speed, Vector2 a_Direction)
+	{
+		Speed = a_Speed;
+		RB_Reference.AddForce(gameObject.transform.right * a_Speed, ForceMode2D.Impulse);
+	}
+
+	void OnCollisionEnter2D(Collision2D col)
+	{
+		Destroy(gameObject);
 	}
 }

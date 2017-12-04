@@ -12,6 +12,8 @@ public class Player : Entity
 	private float Reset_ChargeTimer, ResetCoolDownTimer,MaxCharge;
 	public float RotateTowardsSpeed = 1;
 
+	public bool Alive = true;
+
 	#endregion
 
 	#region Private variables
@@ -106,5 +108,29 @@ public class Player : Entity
 		}
 
 		#endregion
+
+
+		if(Alive == false)
+		{
+			Manager_Reference.GetComponent<EntityManager>().RestartGame();
+		}
+	}
+
+	void OnCollisionEnter2D(Collision2D col)
+	{
+		if(col.gameObject.layer == LayerMask.NameToLayer("EnemyProjectile"))
+		{
+			Health -= 1;
+			if (Health <= 0)
+			{
+				Alive = false;
+			}
+		}
+		if (col.gameObject.layer == LayerMask.NameToLayer("Pickup"))
+		{
+			Gold += col.gameObject.GetComponent<Gold>().GoldValue;
+			Manager_Reference.GetComponent<EntityManager>().SetPowerState();
+			Destroy(col.gameObject);
+		}
 	}
 }
